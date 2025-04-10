@@ -1,0 +1,68 @@
+train_dataset:
+  dataset:
+    name: multiparam-paired-image-folders
+    args:
+      root_path_1: ../data/data_multi_slice/train/1
+      root_path_2: ../data/data_multi_slice/train/2
+      root_path_3: ../data/data_multi_slice/train/3
+      root_path_4: ../data/data_multi_slice/train/5
+      root_path_5: ../data/data_multi_slice/train/7
+      root_path_6: ../data/data_multi_slice/train/8
+      root_path_7: ../data/data_multi_slice/train/9
+      repeat: 16
+      cache: in_memory
+  wrapper:
+    name: multiparam-paired
+    args:
+      inp_size: 64
+      augment: true
+      
+  batch_size: 4
+
+val_dataset:
+  dataset:
+    name: multiparam-paired-image-folders
+    args:
+      root_path_1: ../data/data_multi_slice/test/1
+      root_path_2: ../data/data_multi_slice/test/2
+      root_path_3: ../data/data_multi_slice/test/3
+      root_path_4: ../data/data_multi_slice/test/5
+      root_path_5: ../data/data_multi_slice/test/7
+      root_path_6: ../data/data_multi_slice/test/8
+      root_path_7: ../data/data_multi_slice/test/9
+      
+      first_k: 20
+      repeat: 1
+      cache: in_memory
+  wrapper:
+    name: multiparam-paired
+    args:
+      inp_size: 
+      
+  batch_size: 1
+
+
+model:
+  name: crl
+  args:
+    encoder_spec:
+      name: ResNet-32-256
+      args:
+        res_scale: 0.1
+    imnet_spec:
+      name: mlp
+      args:
+        out_dim: 1
+        hidden_list: [256, 256, 256, 256, 256]
+
+optimizer:
+  name: adam
+  args:
+    lr: 1.e-4
+epoch_max: 1000
+multi_step_lr:
+  milestones: [200, 400, 600, 800, 1000]
+  gamma: 0.5
+
+epoch_val: 1
+epoch_save: 200

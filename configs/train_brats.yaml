@@ -1,0 +1,66 @@
+train_dataset:
+  dataset:
+    name: paired-image-folders
+    args:
+      root_path_0: D:\projects\2023\Brain\data\BRATS\one/T1
+      root_path_1: D:\projects\2023\Brain\data\BRATS\one\T2
+      root_path_2: D:\projects\2023\Brain\data\BRATS\one\FR
+      root_path_3: D:\projects\2023\Brain\data\BRATS\one\GD
+      repeat: 1
+      cache: in_memory
+  wrapper:
+    name: paired
+    args:
+      inp_size: 64
+      augment: False
+      
+  batch_size: 1
+
+val_dataset:
+  dataset:
+    name: paired-image-folders
+    args:
+      root_path_0: D:\projects\2023\Brain\data\BRATS\one\T1
+      root_path_1: D:\projects\2023\Brain\data\BRATS\one\GD
+      root_path_2: D:\projects\2023\Brain\data\BRATS\one\T2
+      root_path_3: D:\projects\2023\Brain\data\BRATS\one\FR
+      
+      first_k: 1
+      repeat: 1
+      cache: in_memory
+  wrapper:
+    name: paired
+    args:
+      inp_size: 
+      
+  batch_size: 1
+
+
+model:
+  name: lccd
+  args:
+    encoder_spec:
+      name: ResNet-16-64
+      args:
+        res_scale: 0.1
+    imnet_spec:
+      name: mlp
+      args:
+        out_dim: 1
+        hidden_list: [256, 256, 256, 256, 256]
+    text_prompt: True
+
+      
+
+optimizer:
+  name: adam
+  args:
+    lr: 1.e-4
+epoch_max: 1000
+multi_step_lr:
+  milestones: [200, 400, 600, 800, 1000]
+  #milestones: [100,200,300,400,500,600,700,800]
+  gamma: 0.5
+
+epoch_val: 1
+epoch_save: 200
