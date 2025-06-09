@@ -1,4 +1,4 @@
-# Arbitrary Contrast MRI Synthesis
+# Learning contrast and content representations for synthesizing magnetic resonance image of arbitrary contrast (MedIA 2025)
 
 This repository implements a deep learning framework for synthesizing MRI scans with arbitrary contrasts. The method learning contrast and content representation to generate high-fidelity MRI images across different contrast domains.
 
